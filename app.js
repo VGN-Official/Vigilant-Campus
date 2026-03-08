@@ -137,10 +137,14 @@ if(contact2Input) {
         const lon = position.coords.longitude;
         const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
 
-        const smsBody = `VIGN EMERGENCY ALERT!%0A` +
-                        `Location: ${mapUrl}%0A` +
-                        `Hostel: ${Name}%0A` +
-                        `Room: ${number}`;
+        const hostel = localStorage.getItem('vgn_blood') || "NOT SET";
+        const studentId = localStorage.getItem('vgn_allergies') || "Student";
+
+        const smsBody = `🎓 CAMPUS SECURITY ALERT!%0A` +
+                `LOCATION: ${hostel}%0A` +
+                `ID/LEVEL: ${studentId}%0A` +
+                `GPS: ${mapUrl}%0A` +
+                `Status: Distress signal triggered by student.`;
 
         showSmsButton(smsBody); // Trigger the dual buttons
         window.playSiren();
@@ -148,6 +152,14 @@ if(contact2Input) {
         const smsBody = `VIGN EMERGENCY! (GPS Off)%0A` +
                         `Hostel: ${hostel}%0A` +
                         `Room Number: ${room}`;
+buttonsHTML += `
+    <a href="${smsUrlBuilder(c1, body)}" style="background: #1565C0; display:block; padding: 22px; color: white; border-radius: 15px; text-decoration: none; font-weight: bold; text-align: center; margin-bottom:15px; border-bottom: 5px solid #0D47A1; font-size: 1.1em;">
+       🚨 ALERT CAMPUS SECURITY
+    </a>
+    <a href="${smsUrlBuilder(c2, body)}" style="background: #455A64; display:block; padding: 20px; color: white; border-radius: 15px; text-decoration: none; font-weight: bold; text-align: center; border-bottom: 5px solid #263238;">
+       🛡️ ALERT HOSTEL WARDEN
+    </a>`;
+                    
         showSmsButton(smsBody);
         window.playSiren();
     }, { enableHighAccuracy: true });
